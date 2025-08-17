@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import Project, TeamMember
 
+# Register your models here.
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'owner', 'start_date', 'end_date')

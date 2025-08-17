@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import Task, Comment
 from accounts.serializers import UserSerializer
 
+# Serializers for Task and Comment models
 class TaskSerializer(serializers.ModelSerializer):
     project_id = serializers.IntegerField(write_only=True, required=False)
     assigned_to_id = serializers.IntegerField(write_only=True, required=False, allow_null=True)
