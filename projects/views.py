@@ -4,6 +4,11 @@ from django.db.models import Q
 from .models import Project, TeamMember
 from .serializers import ProjectSerializer, TeamMemberSerializer
 from .permissions import IsProjectOwner
+from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
+from tasks.models import Task
+
 
 class ProjectListCreateView(generics.ListCreateAPIView):
     serializer_class = ProjectSerializer
@@ -52,3 +57,26 @@ class AddMemberView(generics.CreateAPIView):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+    
+
+def is_member(user, project):
+    if user.is_superuser or project.owner == user:
+        return True
+    return TeamMember.objects.filter(project=project, user=user).exists()
+
+@login_required
+def project_detail_view(request, pk):
+    project = get_object_or_404(Project, pk=pk)
+
+    if not is_member(request.user, project):
+        return HttpResponseForbidden("You are not authorized to view this project.")
+
+    tasks = Task.objects.filter(project=project).select_related("assigned_to", "created_by")
+    members = TeamMember.objects.filter(project=project).select_related("user")
+
+    return render(request, "projects/project_detail.html", {
+        "project": project,
+        "tasks": tasks,
+        "members": members,
+    })
+
