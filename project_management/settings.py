@@ -2,6 +2,8 @@ from pathlib import Path
 import os
 from datetime import timedelta
 from dotenv import load_dotenv
+import dj_database_url
+from decouple import config
 
 load_dotenv()
 
@@ -62,14 +64,9 @@ WSGI_APPLICATION = 'project_management.wsgi.application'
 
 # Database config
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'project_management_db',
-        'USER': 'root', 
-        'PASSWORD': '890532488',  
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
-    }
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL')
+    )
 }
 
 AUTH_PASSWORD_VALIDATORS = [
