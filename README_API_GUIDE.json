@@ -1,0 +1,180 @@
+{
+    "base_url": "http://127.0.0.1:8000/api/",
+    "auth": {
+        "register": {
+            "url": "/accounts/register/",
+            "method": "POST",
+            "body": {
+                "username": "wamamili",
+                "email": "wamamiliclinton@gmail.com",
+                "password": "890532488",
+                "role": "member"
+            },
+            "response": {
+                "id": 1,
+                "username": "wamamili",
+                "email": "wamamiliclinton@gmail.com",
+                "role": "member"
+            }
+        },
+        "login": {
+            "url": "/accounts/login/",
+            "method": "POST",
+            "body": {
+                "username": "wamamili",
+                "password": "890532488"
+            },
+            "response": {
+                "message": "Login successful",
+                "username": "wamamili",
+                "access": "<JWT_ACCESS_TOKEN>",
+                "refresh": "<JWT_REFRESH_TOKEN>"
+            },
+            "note": "Use the 'access' token in Authorization header as 'Bearer <token>' for all protected endpoints."
+        }
+    },
+    "projects": {
+        "create_project": {
+            "url": "/projects/",
+            "method": "POST",
+            "headers": {
+                "Authorization": "Bearer <access_token>"
+            },
+            "body": {
+                "title": "Website 3D Project",
+                "description": "Building a 3D Website API demo",
+                "start_date": "2025-09-07",
+                "end_date": "2025-09-20"
+            },
+            "response": {
+                "message": "Project successful created",
+                "id": 2,
+                "title": "Website 3D Project",
+                "description": "Building a 3D Website API demo",
+                "owner": {
+                    "id": 1,
+                    "username": "wamamili",
+                    "email": "wamamiliclinton@gmail.com",
+                    "role": "member"
+                },
+                "start_date": "2025-09-07",
+                "end_date": "2025-09-20",
+                "team": []
+            }
+        },
+        "add_member": {
+            "url": "/projects/{project_id}/add_member/",
+            "method": "POST",
+            "headers": {
+                "Authorization": "Bearer <access_token>"
+            },
+            "body": {
+                "user_id": 2
+            },
+            "response": {
+                "id": 1,
+                "user": {
+                    "id": 2,
+                    "username": "oyola",
+                    "email": "moyola@yagoo.com",
+                    "role": "member"
+                },
+                "project": 1
+            }
+        }
+    },
+    "tasks": {
+        "create_task": {
+            "url": "/projects/{project_id}/tasks/",
+            "method": "POST",
+            "headers": {
+                "Authorization": "Bearer <access_token>"
+            },
+            "body": {
+                "title": "Design API endpoints",
+                "description": "Define routes for tasks and comments",
+                "status": "todo",
+                "priority": "high",
+                "assigned_to_id": 2,
+                "due_date": "2025-09-10"
+            },
+            "response": {
+                "id": 3,
+                "title": "Design API endpoints",
+                "description": "Define routes for tasks and comments",
+                "project": 1,
+                "assigned_to": {
+                    "id": 2,
+                    "username": "oyola",
+                    "email": "moyola@yagoo.com",
+                    "role": "member"
+                },
+                "status": "todo",
+                "status_display": "To Do",
+                "priority": "high",
+                "priority_display": "High",
+                "due_date": "2025-09-10",
+                "created_by": {
+                    "id": 1,
+                    "username": "wamamili",
+                    "email": "wamamiliclinton@gmail.com",
+                    "role": "member"
+                }
+            }
+        },
+        "get_task": {
+            "url": "/projects/{project_id}/tasks/{task_id}/",
+            "method": "GET",
+            "headers": {
+                "Authorization": "Bearer <access_token>"
+            },
+            "response": {
+                "id": 1,
+                "title": "Design API endpoints",
+                "description": "Define routes for tasks and comments",
+                "project": 1,
+                "assigned_to": {
+                    "id": 2,
+                    "username": "oyola",
+                    "email": "moyola@yagoo.com",
+                    "role": "member"
+                },
+                "status": "todo",
+                "status_display": "To Do",
+                "priority": "high",
+                "priority_display": "High",
+                "due_date": "2025-09-10",
+                "created_by": {
+                    "id": 1,
+                    "username": "wamamili",
+                    "email": "wamamiliclinton@gmail.com",
+                    "role": "member"
+                }
+            }
+        }
+    },
+    "comments": {
+        "create_comment": {
+            "url": "/projects/{project_id}/tasks/{task_id}/comment/",
+            "method": "POST",
+            "headers": {
+                "Authorization": "Bearer <access_token>"
+            },
+            "body": {
+                "body": "This task is moving forward as expected"
+            },
+            "response": {
+                "id": 1,
+                "task": 1,
+                "author": {
+                    "id": 1,
+                    "username": "wamamili",
+                    "email": "wamamiliclinton@gmail.com",
+                    "role": "member"
+                },
+                "body": "This task is moving forward as expected",
+                "timestamp": "2025-09-07T21:16:25.041417+03:00"
+            }
+        }
+    }
+}

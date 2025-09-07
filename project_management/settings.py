@@ -22,7 +22,6 @@ INSTALLED_APPS = [
     'accounts',
     'projects',
     'tasks',
-    "crispy_forms",
 ]
 
 MIDDLEWARE = [
@@ -63,7 +62,7 @@ WSGI_APPLICATION = 'project_management.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'project_management_sys_db',
+        'NAME': 'project_management_db',
         'USER': 'root', 
         'PASSWORD': '890532488',  
         'HOST': '127.0.0.1',
@@ -93,8 +92,7 @@ AUTH_USER_MODEL = 'accounts.User'
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
-        "rest_framework.authentication.SessionAuthentication",  # so web login still works
-    ],
+            ],
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],

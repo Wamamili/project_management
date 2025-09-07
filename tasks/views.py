@@ -25,11 +25,12 @@ class ProjectTaskListCreateView(generics.ListCreateAPIView):
         project = get_object_or_404(Project, pk=self.kwargs['project_id'])
         if not is_member(request.user, project):
             return Response({'detail': 'Not a project member.'}, status=status.HTTP_403_FORBIDDEN)
-        data = request.data.copy()
-        data['project_id'] = project.id
-        serializer = self.get_serializer(data=data)
+
+        # Remove injecting project_id into request data
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
+        serializer.save(project=project, created_by=request.user)  # attach automatically
+
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 

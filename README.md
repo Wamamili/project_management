@@ -52,18 +52,20 @@ A **Django + Django REST Framework (DRF) + JWT + MySQL** based project managemen
 
 5. Access the app:
    - API root: `http://127.0.0.1:8000/api/`  
-   - Admin: `http://127.0.0.1:8000/admin/`  
-   - Dashboard (after login): `http://127.0.0.1:8000/api/accounts/dashboard/`  
+   - Admin: `http://127.0.0.1:8000/admin/`   
 
 ## API Endpoints
 
 ### Accounts
-- `POST /api/accounts/register/` — Register
-- `POST /api/accounts/login/` — JWT login
-- `POST /api/accounts/token/refresh/` — Refresh token
-- `GET /api/accounts/me/` — Current user
-- `GET /api/accounts/dashboard/` — User dashboard
-- `GET /api/accounts/profile/` — Profile page
+POST /api/accounts/register/ → create new user
+POST /api/accounts/login/ → login with username & password
+POST /api/accounts/logout/ → logout
+GET /api/accounts/dashboard/ → dashboard (auth required)
+GET/PUT /api/accounts/profile/ → get/update profile
+POST /api/accounts/change-password/ → change password
+
+Session-based login (via api_login + api_logout)
+OR JWT-based login (via /api/token/)
 
 ### Projects
 - `GET /api/projects/` — List projects for current user

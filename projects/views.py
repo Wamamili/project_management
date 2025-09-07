@@ -21,7 +21,16 @@ class ProjectListCreateView(generics.ListCreateAPIView):
         ).distinct()
 
     def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+        project = serializer.save(owner=self.request.user)
+        self._created_project = project
+
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        if hasattr(self, '_created_project'):
+            data = response.data.copy()
+            data = {"message": "Project successful created", **data}
+            response.data = data
+        return response
 
 class ProjectRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Project.objects.all().select_related('owner')
@@ -74,9 +83,9 @@ def project_detail_view(request, pk):
     tasks = Task.objects.filter(project=project).select_related("assigned_to", "created_by")
     members = TeamMember.objects.filter(project=project).select_related("user")
 
-    return render(request, "projects/project_detail.html", {
+    return render({
         "project": project,
         "tasks": tasks,
         "members": members,
-    })
+        })
 
